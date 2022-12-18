@@ -19,7 +19,7 @@ def print_separator(description: str='', sym: str='=', line_len: int=50):
 
 #в drone по очереди попадает каждый дрон из списка drone_list
 for drone in drone_list:
-	print(drone)
+    print(drone)
 
 
 # -------------------------------------------------------------------------------------------------------------------------------------
@@ -93,3 +93,34 @@ for drone, weight in zip(drone_list,  drone_weight_list):
 print("Total:", count_with_registration)
 
 print_separator()
+
+#TODO4
+#для каждого дрона из списка выведите, нудно ли согласовывать полет при следующих условиях:
+#высота 100 м, полет над населенным пунктом, вне закрытых зон, в прямой видимости
+#помните, что для дронов тяжелее 150 г согласовывать полет над населенным пунктом - обязательно!
+
+above_city = True
+vlos = True
+height = 100
+closed_area = False
+
+for drone, weight in zip(drone_list,  drone_weight_list):
+    print(f"Нужно ли согласовать полет для дрона {drone}: ", end='')
+
+    # Если полет над городом и больше 150 г
+    if above_city and weight > 150:
+        print(f"Обязательно! Т.к. для дронов массой больше 150г(Масса дрона: {weight}) над населенным пунктом обязательно согласование.")
+        continue
+
+    # В остальных случаях проверяем высоту, полеты над закрытой зоной и зону видимости.
+    if vlos and height <= 150 and not closed_area:
+        print("Не нужно согласовывать, летайте спокойно!")
+    else:
+        conditions = ""
+        if not vlos:
+            conditions += "/полет вне зоны прямой видимости/"
+        if height > 150:
+            conditions += "/высота полета более 150 м/"
+        if closed_area:
+            conditions += "/полет в закрытой зоне/"
+        print(f"Нужно согласовывать, т.к. {conditions}")
